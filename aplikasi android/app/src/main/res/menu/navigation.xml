@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_one"
+        android:icon="@drawable/ic_attach_money_black_24dp"
+        android:title="@string/title_token"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_two"
+        android:enabled="true"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_dashboard"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_three"
+        android:icon="@drawable/ic_announcement_black_24dp"
+        android:title="@string/title_aduan"
+        app:showAsAction="ifRoom" />
+
+</menu>

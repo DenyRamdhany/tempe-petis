@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Tempe Petis</string>
+    <string name="title_token">Token</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_aduan">Aduan</string>
+    <string name="isi_daya">24.56</string>
+    <string name="taxt_btn_power">Matikan</string>
+</resources>
