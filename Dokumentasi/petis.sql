@@ -33,7 +33,7 @@ CREATE TABLE `aduan` (
   `status_aduan` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
+-- -------------------------------------------------------- 
 
 --
 -- Table structure for table `golongan`
