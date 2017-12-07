@@ -18,14 +18,28 @@
             android:text="Top up token listrik"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/input_token"
-            style="@android:style/Widget.EditText"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/input_token"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/topUp_hint"
+                android:inputType="number"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_topup"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Masukan nomor token di sini"
-            android:inputType="number" />
+            android:text="Top Up" />
 
     </LinearLayout>
 

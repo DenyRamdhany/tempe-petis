@@ -21,10 +21,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bottomNavigation = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigation.inflateMenu(R.menu.navigation);
-        fragmentManager = getSupportFragmentManager();
-        fragment = new TwoFragment();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content, fragment).commit();
+        bottomNavigation.getMenu().getItem(1).setChecked(true);
+        //fragmentManager = getSupportFragmentManager();
+        //fragment = new TwoFragment();
+        //final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        //transaction.replace(R.id.content, fragment).commit();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        TwoFragment twoFragment = new TwoFragment();
+        transaction.replace(R.id.content, twoFragment);
+        transaction.commit();
+
+
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -44,8 +52,11 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new TwoFragment();
                         break;
                 }
-                final FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.content, fragment).commit();
+                //final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                //transaction.replace(R.id.content, fragment).commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.content, fragment);
+                transaction.commit();
                 return true;
             }
         });

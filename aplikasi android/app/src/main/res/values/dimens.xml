@@ -3,4 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="daya_size">60sp</dimen>
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
 </resources>
