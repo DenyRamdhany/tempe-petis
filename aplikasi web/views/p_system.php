@@ -67,7 +67,7 @@
           <div class="text-left">
             <span class="text-danger">Merah</span> : Belum memiliki meteran listrik<br>
             <i class="fa fa-fw fa-power-off text-success"></i> : Meteran Aktif<br>
-            <i class="fa fa-fw fa-power-off text-danger"></i> : Meteran Non-Aktif 
+            <i class="fa fa-fw fa-power-off text-danger"></i> : Meteran Non-Aktif
           </div>
         </div>
       </div>
@@ -362,11 +362,7 @@
         "responsive": {details: false},
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
     });
-
-    $('.datepicker').datetimepicker({
-      format: "DD-MM-YYYY"
-    });
-
+    
   });
 
   function resize(section) {

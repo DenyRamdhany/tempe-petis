@@ -13,6 +13,7 @@
     { if($this->Session->isLogin()) $this->redirect('system');
 
       $testCase = $this->Pegawai->login($this->postData());
+
       if(!empty($this->postData()) && $testCase)
         { $this->Session->begin();
           $this->Session->setData($testCase[0]);

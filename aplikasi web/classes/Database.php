@@ -3,9 +3,9 @@
   class Database
   { private $dbServer = 'localhost';
     private $dbDriver = 'mysql';
-    private $dbName   = 'id3902105_petis';
-    private $dbUser   = 'id3902105_pengguna';
-    private $dbPass   = 'pengguna';
+    private $dbName   = 'u780923786_petis';
+    private $dbUser   = 'u780923786_petis';
+    private $dbPass   = 'dancenanta';
     private $conn;
 
     protected function open()

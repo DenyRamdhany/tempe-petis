@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="<?php echo $this->baseURL; ?>includes/datatables-responsive/dataTables.responsive.css">
     <!-- DataTables Button -->
     <link rel="stylesheet" href="<?php echo $this->baseURL; ?>includes/datatables/css/buttons.dataTables.min.css">
-    <!-- Datetimepicker -->
-    <link rel="stylesheet" href="<?php echo $this->baseURL;?>includes/datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="<?php echo $this->baseURL; ?>includes/font-awesome/css/font-awesome.min.css">
@@ -33,11 +31,6 @@
     <script type="text/javascript" src="<?php echo $this->baseURL; ?>includes/datatables/js/jszip.min.js"></script>
     <script type="text/javascript" src="<?php echo $this->baseURL; ?>includes/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo $this->baseURL; ?>includes/datatables-responsive/dataTables.responsive.js"></script>
-    <!-- datetimepicker -->
-    <script type="text/javascript" src="<?php echo $this->baseURL; ?>includes/moment/min/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo $this->baseURL; ?>includes/datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <!-- ckeditor core -->
-    <script type="text/javascript" src="<?php echo $this->baseURL; ?>includes/ckeditor/ckeditor.js"></script>
 
     <script type="text/javascript">
     var url = "<?php echo $this->getURL(); ?>";
