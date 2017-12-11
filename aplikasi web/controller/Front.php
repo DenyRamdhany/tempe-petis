@@ -2,22 +2,20 @@
 
   class Front extends Page
   {
-    function __construct()
-    {
-    }
-
-    public function index($param='')
-    { if($this->session()->isLogin()) $this->redirect('system');
+    public function index()
+    { if($this->Session->isLogin()) $this->redirect('system');
 
       $data['warn'] = "";
       $this->show('p_login',$data);
     }
 
     public function login()
-    { if($this->session()->isLogin()) $this->redirect('system');
+    { if($this->Session->isLogin()) $this->redirect('system');
 
-      if(!empty($this->postData()) && $this->postData()['user']=='admin' && $this->postData()['pass']=='admin')
-        { $this->session()->begin();
+      $testCase = $this->Pegawai->login($this->postData());
+      if(!empty($this->postData()) && $testCase)
+        { $this->Session->begin();
+          $this->Session->setData($testCase[0]);
           $this->redirect('system');
         }
       else
@@ -27,7 +25,7 @@
     }
 
     public function logout()
-    { $this->session()->end();
+    { $this->Session->end();
       $this->redirect('');
     }
 

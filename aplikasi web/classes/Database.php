@@ -3,14 +3,10 @@
   class Database
   { private $dbServer = 'localhost';
     private $dbDriver = 'mysql';
-    private $dbName   = 'u780923786_psbo';
-    private $dbUser   = 'u780923786_root';
-    private $dbPass   = '@Tekom5050';
+    private $dbName   = 'id3902105_petis';
+    private $dbUser   = 'id3902105_pengguna';
+    private $dbPass   = 'pengguna';
     private $conn;
-
-    public function __construct()
-    { //masih kosong
-    }
 
     protected function open()
     { try {
@@ -47,12 +43,87 @@
       }
     }
 
+    public function replace($table,$values)
+    { if($this->open())
+      { $key   = array_keys($values);
+        $val   = array_values($values);
+        $field = implode(',',$key);
+        $bind  = str_repeat("?,",count($key)-1);
+
+        try {
+          $sql = 'REPLACE INTO '.$table." ($field) VALUES ($bind?)";
+          $this->conn->prepare($sql)->execute($val);
+          return true;
+        }
+        catch(PDOException $e){
+          return $e->getMessage();
+        }
+
+        $this->close();
+      }
+    }
+
     public function getTable($table,$col = '*')
     { if($this->open())
       { $sql = 'SELECT '.$col.' FROM '.$table;
         $res = $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         $this->close();
         return $res;
+      }
+    }
+
+    public function getSingle($table,$val)
+    { if($this->open())
+      { $sql = 'SELECT * FROM '.$table.' WHERE '.$val;;
+        $res = $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        $this->close();
+        return $res;
+      }
+    }
+
+    public function getInnerJoin($table1,$table2,$id)
+    { if($this->open())
+      { $sql = 'SELECT * FROM '.$table1.' INNER JOIN '.$table2.' ON '.$table1.'.'.$id.' = '.$table2.'.'.$id;
+        $res = $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        $this->close();
+        return $res;
+      }
+    }
+
+    public function getLeftJoin($table1,$table2,$id)
+    { if($this->open())
+      { $sql = 'SELECT * FROM '.$table1.' LEFT JOIN '.$table2.' ON '.$table1.'.'.$id.' = '.$table2.'.'.$id;
+        $res = $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        $this->close();
+        return $res;
+      }
+    }
+
+    public function getRightJoin($table1,$table2,$id,$isnull=0)
+    { if($this->open())
+      { $nul=' IS NOT NULL';
+        if($isnull==1) $nul=' IS NULL';
+
+        $sql = 'SELECT * FROM '.$table1.' RIGHT JOIN '.$table2.' ON '.$table1.'.'.$id.' = '.$table2.'.'.$id.' WHERE '.$table1.'.'.$id.' '.$nul;
+
+        $res = $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        $this->close();
+        return $res;
+      }
+    }
+
+    public function delSingle($table,$val)
+    { if($this->open())
+      { try {
+          $sql = 'DELETE FROM '.$table.' WHERE '.$val;
+          $this->conn->prepare($sql)->execute();
+          return true;
+        }
+        catch(PDOException $e){
+          return $e->getMessage();
+        }
+
+        $this->close();
       }
     }
 

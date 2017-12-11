@@ -2,40 +2,30 @@
 
   class Pelanggan
   {
-    private $no_rek;
-    private $golongan;
-    private $nama;
-    private $alamat;
-    private $no_tlp;
-    private $email;
-    private $kwh;
+    private $db;
 
-    function __construct($no_rek)
-    { $db = new Database();
-      $res = $db->query("SELECT * FROM pelanggan WHERE no_rekening = ".$no_rek);
-
-      if($res)
-      { $gol = $db->query('SELECT * FROM golongan WHERE id_golongan = "'.$res[0]['id_golongan'].'"');
-        $this->no_rek = $res[0]['no_rekening'];
-        $gol[0]['harga_perkwh'] = (double) $gol[0]['harga_perkwh'];
-        $this->golongan = $gol[0];
-        $this->nama = $res[0]['nama'];
-        $this->alamat = $res[0]['alamat'];
-        $this->no_tlp = $res[0]['no_tlp'];
-        $this->email = $res[0]['email'];
-        $this->kwh = $res[0]['sisa_kwh'];
-      }
+    public function __construct()
+    { $this->db = $this->db = Init::Instance()->database;
     }
 
-    public function getDetail()
-    { return array('nomor_rekening' => $this->no_rek,
-                   'golongan' => $this->golongan,
-                   'nama_jelas' => $this->nama,
-                   'tempat_tinggal' => $this->alamat,
-                   'nomor_telepon' => $this->no_tlp,
-                   'alamat_email' => $this->email,
-                   'kwh_tersisa' => (double)$this->kwh,
-                  );
+    public function addReplace($param)
+    { if($param['no_meter']==='null') $param['no_meter']=null;
+      $this->db->replace('pelanggan',$param);
+    }
+    public function delPelanggan($param)
+    { return $this->db->delSingle('pelanggan','no_rek_listrik="'.$param['no_rek_listrik'].'"');
+    }
+
+    public function getAll()
+    { return $this->db->getTable('pelanggan');
+    }
+
+    public function getDetail($id)
+    { return $this->db->query('SELECT * FROM pelanggan LEFT JOIN meteran ON pelanggan.no_meter = meteran.no_meter WHERE no_rek_listrik="'.$id.'"');
+    }
+
+    public function getWithMeteran()
+    { return $this->db->getLeftJoin('pelanggan','meteran','no_meter');
     }
 
   }

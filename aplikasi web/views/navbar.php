@@ -14,7 +14,7 @@
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>&nbsp; Admin<b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>&nbsp; <?php echo $userData['nama']; ?><b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
                     <a href="#setting" data-toggle="modal"><i class="fa fa-fw fa-gear"></i> Settings</a>
@@ -37,7 +37,7 @@
           <div class="modal-body">
             <h2>Pengaturan akun</h2>
             <br>
-            <form action="<?php echo $this->baseURL.$this->router."/front/setting/"; ?>" method="post">
+            <form action="<?php echo $this->getURL()."front/setting/"; ?>" method="post">
               <div class="form-group">
                 <label class="control-label col-sm-3" >Username</label>
                 <div class="col-sm-9">

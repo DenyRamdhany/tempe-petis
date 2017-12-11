@@ -12,10 +12,10 @@
               <form action="<?php echo $this->baseURL.$this->router."/front/login/"; ?>" method="post">
                 <fieldset>
                   <div class="form-group">
-                    <input type="text" name="user" placeholder="username" class="form-control" required autofocus>
+                    <input type="text" name="username" placeholder="username" class="form-control" required autofocus>
                   </div>
                   <div class="form-group">
-                    <input type="password" name="pass" placeholder="password" class="form-control" required>
+                    <input type="password" name="password" placeholder="password" class="form-control" required>
                   </div>
                   <div class="form-group text-center text-danger">
                     <?php echo $param['warn']; ?>

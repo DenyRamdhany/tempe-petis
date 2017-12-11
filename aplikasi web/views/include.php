@@ -40,6 +40,6 @@
     <script type="text/javascript" src="<?php echo $this->baseURL; ?>includes/ckeditor/ckeditor.js"></script>
 
     <script type="text/javascript">
-
+    var url = "<?php echo $this->getURL(); ?>";
     </script>
   </head>

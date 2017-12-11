@@ -2,23 +2,29 @@
 
   class Page
   {
-    protected $baseURL  = 'http://localhost/petis/';
+    protected $baseURL  = 'http://localhost/olite/';
     protected $appName  = 'Tempe Petis';
-    protected $router   = 'apps.php';
+    protected $router   = 'index.php';
+    protected $views    = 'views';
 
-    function __construct()
-    {
+
+    public function __construct()
+    { $obj = Init::Instance();
+      foreach ($obj as $key) {
+        $this->{get_class($key)}=$key;
+      }
     }
 
-    public function index()
-    {
+    public function getURL()
+    { return $this->baseURL.$this->router."/";
     }
 
-    public function show($pageName,$param="")
-    { if(!file_exists('./pages/'.$pageName.'.php')) echo "Halaman Tidak Ditemukan";
+    public function show($viewsName,$param="")
+    { if(!file_exists('./'.$this->views.'/'.$viewsName.'.php')) echo "Halaman \"$viewsName\" Tidak Ditemukan";
       else
       { ob_start();
-        $content = require('./pages/'.$pageName.'.php');
+        if(!empty($param)) extract($param);
+        $content = require('./'.$this->views.'/'.$viewsName.'.php');
         $content = ob_get_clean();
         echo $content;
       }
@@ -29,7 +35,7 @@
     }
 
     public function redirect($param)
-    { header("Location:".$this->baseURL.$this->router."/".$param);
+    { header("Location:".$this->getURL().$param);
       exit();
     }
 
@@ -37,18 +43,6 @@
     { echo "<pre>";
       print_r($param);
       echo "</pre>";
-    }
-
-    public function dbase()
-    { return new Database();
-    }
-
-    public function email()
-    { return new Email();
-    }
-
-    public function session()
-    { return new Session();
     }
 
   }
