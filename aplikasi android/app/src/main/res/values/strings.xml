@@ -1,15 +1,19 @@
 <resources>
+    <string name="base_url">https://petis.jaban.in/index.php/api</string>
+    <string name="data_url">empty</string>
+
     <string name="app_name">Tempe Petis</string>
     <string name="title_token">Token</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_aduan">Aduan</string>
-    <string name="isi_daya">24.56</string>
+    <string name="isi_daya">00.00</string>
     <string name="taxt_btn_power">Matikan</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_rek">Nomor Rekening</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -21,6 +25,5 @@
     </string>
     <string name="action_next">Next</string>
     <string name="action_otp_button">Next</string>
-    <string name="prompt_otp">Nomor OTP</string>
     <string name="topUp_hint">Masukan nomor token di sini</string>
 </resources>
