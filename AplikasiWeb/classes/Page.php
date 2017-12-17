@@ -2,7 +2,7 @@
 
   class Page
   {
-    protected $baseURL  = 'http://localhost/olite/';
+    protected $baseURL  = 'https://petis.jaban.in/';
     protected $appName  = 'Tempe Petis';
     protected $router   = 'index.php';
     protected $views    = 'views';

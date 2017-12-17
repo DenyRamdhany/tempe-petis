@@ -2,9 +2,15 @@
 
   class Pelanggan
   { private $db;
+    private $meteran;
+    private $token;
+    private $aduan;
 
     public function __construct()
     { $this->db = Init::Instance()->database;
+      $this->meteran = Init::Instance()->meteran;
+      $this->token = Init::Instance()->token;
+      $this->aduan = Init::Instance()->aduan;
     }
 
     public function addReplace($param)
@@ -23,8 +29,25 @@
     }
 
     public function getWithKey($key)
-    { return $this->db->getSingle('pelanggan','keylog="'.$key.'"');
+    { $userdata = $this->db->getSingle('pelanggan','keylog="'.$key.'"')[0];
+      $meteran  = $this->meteran->getWithGolongan($userdata['no_meter']);
+      $history  = $this->token->getUserHist($userdata['no_rek_listrik']);
+      $aduan    = $this->aduan->getUserHist($userdata['no_rek_listrik']);
+
+      unset($userdata['keylog']);
+      unset($userdata['no_meter']);
+
+      $meteran['sisa_kwh'] = (double)$meteran['sisa_kwh'];
+      $meteran['harga_perkwh'] = (double)$meteran['harga_perkwh'];
+      $meteran['status'] = (int)$meteran['status'];
+
+      return array( 'userdata' => $userdata,
+                    'meteran' => $meteran,
+                    'history' => $history,
+                    'aduan' => $aduan
+                  );
     }
+
     function reqOtp($id)
     { $case = $this->getDetail($id);
       if(count($case)==1)
@@ -60,8 +83,9 @@
                               ));
         }
 
-        return Array('response' => "OTP Telah Dikirim ke Email Anda");
+        return Array('response' => "OTP Telah Dikirim ke Email Anda",'status' => 1);
       }
+      else return Array('response' => "Nomor Rekening Tidak Valid",'status'=> 0);
     }
 
     public function loginOtp($otp,$addr='')

@@ -1,1 +1,7 @@
+error_log
+.ftpquota
 .ftpconfig
+.ftpignore
+id_rsa
+.DS_Store
+.git

@@ -6,7 +6,6 @@
     else if(file_exists('./controller/'.$class_name.'.php')) require_once './controller/'.$class_name.'.php';
     else
     { echo "Error pada Classes atau Controller tidak tersedia";
-      die();
     }
   });
 

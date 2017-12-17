@@ -33,7 +33,7 @@
 
     //fungsi untuk tabel pelanggan
     public function addPelanggan()
-    { $this->debug($this->Pelanggan->addReplace($this->postData()));
+    { $this->Pelanggan->addReplace($this->postData());
       $this->redirect('');
     }
     public function randomRekening()
@@ -59,7 +59,7 @@
 
     // fungsi untuk tabel meteran
     public function addMeteran()
-    { $this->debug($this->Meteran->addReplace($this->postData()));
+    { $this->Meteran->addReplace($this->postData());
       $this->redirect('');
     }
     public function detailMeteran()

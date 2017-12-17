@@ -1,5 +1,8 @@
 <?php
-  if($enabled) echo json_encode($response,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+  if($enabled)
+  { header('Content-Type: application/json');
+    echo json_encode($response,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+  }
   else { echo "<h3>YOU HAVE NO RIGHTS!</h3>";
 
 ?>

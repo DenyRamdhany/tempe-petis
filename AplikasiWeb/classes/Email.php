@@ -11,9 +11,9 @@
     { $this->mail = new PHPMailer(); //php mailer https://github.com/PHPMailer/PHPMailer
 
       $this->mail->isSMTP();
-      $this->mail->Host = 'smtp.gmail.com';
+      $this->mail->Host = 'iix4.cloudhost.id';
       $this->mail->SMTPAuth = true;
-      $this->mail->Username = 'sampuc.inc@gmail.com';
+      $this->mail->Username = 'petis@jaban.in';
       $this->mail->Password = 'dancenanta';
       $this->mail->SMTPSecure = 'ssl';
       $this->mail->Port = 465;

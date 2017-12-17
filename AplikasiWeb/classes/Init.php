@@ -13,6 +13,8 @@
         //tambah kelas baru disini
         $inst->pegawai  = new Pegawai();
         $inst->golongan = new Golongan();
+        $inst->token    = new Token();
+        $inst->aduan    = new Aduan();
         $inst->meteran  = new Meteran();
         $inst->pelanggan= new Pelanggan();
       }

@@ -2,9 +2,11 @@
 
   class Meteran
   { private $db;
+    private $gol;
 
     function __construct()
     { $this->db = Init::Instance()->database;
+      $this->gol = Init::Instance()->golongan;
     }
 
     public function getAll()
@@ -12,11 +14,16 @@
     }
 
     public function addReplace($param)
-    { var_dump($param);
-      var_dump($this->db->replace('meteran',$param));
+    { $this->db->replace('meteran',$param);
     }
     public function getDetail($id)
     { return $this->db->getSingle('meteran','no_meter="'.$id.'"');
+    }
+    public function getWithGolongan($id)
+    { $meteran  = $this->db->getSingle('meteran','no_meter="'.$id.'"')[0];
+      $golongan = $this->gol->getDetail($meteran['id_golongan'])[0];
+
+      return array_merge($meteran,$golongan);
     }
     public function delete($param)
     { return $this->db->delSingle('meteran','no_meter="'.$param['no_meter'].'"');

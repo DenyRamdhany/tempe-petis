@@ -3,6 +3,7 @@
   class Api extends Page
   { public function index()
     { $data['enabled'] = 0;
+      $data['test'] =[];
       $this->show('p_api',$data);
     }
 
@@ -14,7 +15,6 @@
       else if($auth->isKeyValid($param[0]))
       { $data['enabled'] = 1;
         $data['response'] = $this->Pelanggan->getWithKey($param[0]);
-
         $this->show('p_api',$data);
       }
       else $this->show('p_api',$data);
@@ -25,7 +25,7 @@
       if(empty($param)) $this->show('p_api',$data);
       else
       { $data['enabled'] = 1;
-        $data['response'][0]=$this->Pelanggan->reqOtp($param[0]);
+        $data['response']=$this->Pelanggan->reqOtp($param[0]);
         $this->show('p_api',$data);
       }
     }
@@ -35,7 +35,7 @@
       if(empty($param)) $this->show('p_api',$data);
       else
       { $data['enabled'] = 1;
-        $data['response'][0]=$this->Pelanggan->loginotp($param[0],$this->getURL());
+        $data['response']=$this->Pelanggan->loginotp($param[0],$this->getURL());
         $this->show('p_api',$data);
       }
     }

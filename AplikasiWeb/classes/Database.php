@@ -3,8 +3,8 @@
   class Database
   { private $dbServer = 'localhost';
     private $dbDriver = 'mysql';
-    private $dbName   = 'u780923786_petis';
-    private $dbUser   = 'u780923786_petis';
+    private $dbName   = 'jabanin_petis';
+    private $dbUser   = 'jabanin_petis';
     private $dbPass   = 'dancenanta';
     private $conn;
 

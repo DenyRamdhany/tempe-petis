@@ -71,8 +71,6 @@
           </div>
         </div>
       </div>
-
-
     </div>
 
     <div class="col-lg-5">
@@ -362,7 +360,7 @@
         "responsive": {details: false},
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
     });
-    
+
   });
 
   function resize(section) {
