@@ -54,8 +54,8 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private View mProgressView;
 
-    private TextInputEditText inputRek;
-    private TextInputEditText inputPass;
+    private EditText inputRek;
+    private EditText inputPass;
 
     private Button btnNextOtp;
     private Button btnSignIn;
@@ -70,8 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         btnNextOtp = (Button) findViewById(R.id.btn_otp_next);
         btnSignIn  = (Button) findViewById(R.id.btn_sign_in);
 
-        inputRek   = (TextInputEditText) findViewById(R.id.no_rek);
-        inputPass  = (TextInputEditText) findViewById(R.id.passwd);
+        inputRek   = (EditText) findViewById(R.id.no_rek);
+        inputPass  = (EditText) findViewById(R.id.passwd);
 
         mProgressView = (ProgressBar) findViewById(R.id.login_progress);
 
@@ -118,15 +118,26 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
             while((System.currentTimeMillis()-startTime)<4000 && up.getInt(getApplicationContext(),"OTP")<=0);
-            if(up.getInt(getApplicationContext(),"OTP")==1) {
+            if(up.getInt(getApplicationContext(),"OTP")>=0) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        btnNextOtp.setVisibility(View.GONE);
-                        inputRek.setEnabled(false);
-                        btnSignIn.setVisibility(View.VISIBLE);
-                        inputPass.setVisibility(View.VISIBLE);
+                        if(up.getInt(getApplicationContext(),"OTP")==1) {
+                            btnNextOtp.setVisibility(View.GONE);
+                            inputRek.setEnabled(false);
+                            btnSignIn.setVisibility(View.VISIBLE);
+                            inputPass.setVisibility(View.VISIBLE);
+                        }
                         mProgressView.setVisibility(View.GONE);
+                    }
+                });
+            }
+            else{
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressView.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Network Request Error", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -146,9 +157,24 @@ public class LoginActivity extends AppCompatActivity {
             long startTime = System.currentTimeMillis(); //fetch starting time
             while((System.currentTimeMillis()-startTime)<4000 && !up.isexist(getApplicationContext(),"address"));
             if(up.isexist(getApplicationContext(),"address")) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressView.setVisibility(View.GONE);
+                    }
+                });
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+            else {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressView.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Network Request Error", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             return null;
         }
