@@ -3,6 +3,7 @@
   class Page
   {
     protected $baseURL  = 'https://petis.jaban.in/';
+  //  protected $baseURL  = 'http://localhost/petis/';
     protected $appName  = 'Tempe Petis';
     protected $router   = 'index.php';
     protected $views    = 'views';

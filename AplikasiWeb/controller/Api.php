@@ -14,7 +14,8 @@
       if(empty($param)) $this->show('p_api',$data);
       else if($auth->isKeyValid($param[0]))
       { $data['enabled'] = 1;
-        $data['response'] = $this->Pelanggan->getWithKey($param[0]);
+        if(empty($param[1])) $data['response'] = $this->Pelanggan->getWithKey($param[0]);
+        else $data['response'] = ($this->Pelanggan->getWithKey($param[0])[$param[1]]);
         $this->show('p_api',$data);
       }
       else $this->show('p_api',$data);

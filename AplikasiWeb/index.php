@@ -10,7 +10,7 @@
   });
 
   Init::Instance();
-
+ 
   $url   = $_SERVER['REQUEST_URI'];
   $path  = explode('/', parse_url(substr($url, strpos($url, basename(__FILE__)) + 10), PHP_URL_PATH));
   $page  = ucfirst(array_shift($path));

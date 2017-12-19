@@ -13,6 +13,7 @@
       $param['meteranKosong'] = $this->Meteran->getAvailable();
       $param['meteran']       = $this->Meteran->getAll();
       $param['userData']      = $this->Session->getData();
+      $param['history']       = $this->Token->getAll();
 
       $this->show('p_system',$param);
     }

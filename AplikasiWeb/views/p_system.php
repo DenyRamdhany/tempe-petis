@@ -71,6 +71,55 @@
           </div>
         </div>
       </div>
+
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-8 text-left">
+              <a onclick="resize('panelHistory');" class="btn btn-info btn-xs"><i class="fa fa-compress"></i></a> &nbsp;
+              <i class="fa fa-list"></i> &nbsp; History Pembelian Token
+            </div>
+          </div>
+        </div>
+        <div id="panelHistory" class="panel-body">
+          <table id="tblHistory" width="100%" class="table table-striped table-bordered table-hover">
+            <thead>
+              <th>No</th>
+              <th>No Rekening</th>
+              <th>Tanggal Bayar</th>
+              <th>No Token</th>
+              <th>Nominal</th>
+            </thead>
+            <tbody>
+              <?php
+              $c=1;
+                foreach ($history as $tok) {
+                  if(!$tok['status']) echo "<tr class=text-danger>";
+                  else echo "<tr class=text-success>";
+                    echo "<td>".$c++."</td>";
+                    echo "<td>$tok[no_rek_listrik]</td>";
+                    echo "<td>".date("l, d-m-Y H:i",$tok[tgl_bayar])."</td>";
+                    echo "<td>$tok[no_token]</td>";
+                    $noms = str_split(strrev($tok['nominal']),3);
+                    $nominal = "";
+                    foreach ($noms as $nom) {
+                      $nominal.=$nom.'.';
+                    }
+                    $nominal=strrev($nominal);
+                    echo "<td>Rp$nominal</td>";
+                  echo "</tr>";
+                }
+              ?>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel-footer">
+          <div class="text-left">
+            <span class="text-success">Hijau</span> &nbsp; : Token belum digunakan<br>
+            <span class="text-danger">Merah</span>&nbsp;: Token sudah digunakan<br>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="col-lg-5">
@@ -336,8 +385,9 @@
   var tomoro = "<?php echo date('d-m-Y',strtotime(date('d-m-Y')."+1 days")); ?>";
 
   var tblPelanggan = "";
-  var tblGolongan = "";
-  var tblMeteran = "";
+  var tblGolongan  = "";
+  var tblMeteran   = "";
+  var tblHistory   = "";
 
   $(document).ready(function() {
     $('.panel-body').slideUp();
@@ -345,6 +395,7 @@
     if(localStorage['panelPelanggan']==1) $("#panelPelanggan").slideDown();
     if(localStorage['panelGolongan']==1) $("#panelGolongan").slideDown();
     if(localStorage['panelMeteran']==1) $("#panelMeteran").slideDown();
+    if(localStorage['panelHistory']==1) $("#panelHistory").slideDown();
 
     tblPelanggan=$('#tblPelanggan').DataTable({
         "responsive": {details: false},
@@ -357,6 +408,11 @@
     });
 
     tblMeteran=$('#tblMeteran').DataTable({
+        "responsive": {details: false},
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
+    });
+
+    tblHistory=$('#tblHistory').DataTable({
         "responsive": {details: false},
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
     });
