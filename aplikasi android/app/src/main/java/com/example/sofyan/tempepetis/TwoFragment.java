@@ -47,13 +47,16 @@ public class TwoFragment extends android.support.v4.app.Fragment {
         }
     };
 
-    public TwoFragment(){}
+    public TwoFragment TwoFragment(){
+        return this;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup content, Bundle savedInstanceState) { //sisanya ikutin aja ini
         View v = inflater.inflate(R.layout.fragment_two, content,false);
         txtDaya = (TextView) v.findViewById(R.id.daya);
         btnMain = (ToggleButton) v.findViewById(R.id.toggleButton_power);
         handler.post(runnable);
+
         return v;
     }
 }

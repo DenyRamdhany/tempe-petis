@@ -6,7 +6,11 @@
   class Test extends Page
   {
     public function index()
-    { $this->debug($this);
+    { ?>
+      <form class="" action="index.html" method="post">
+
+      </form>
+      <?php
     }
   }
 

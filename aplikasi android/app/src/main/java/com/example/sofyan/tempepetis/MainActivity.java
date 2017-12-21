@@ -40,13 +40,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = (BottomNavigationView)findViewById(R.id.navigation);
         bottomNavigation.inflateMenu(R.menu.navigation);
         bottomNavigation.getMenu().getItem(1).setChecked(true);
-        //fragmentManager = getSupportFragmentManager();
-        //fragment = new TwoFragment();
-        //final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        //transaction.replace(R.id.content, fragment).commit();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        TwoFragment twoFragment = new TwoFragment();
+        final OneFragment oneFragment = new OneFragment();
+        final TwoFragment twoFragment = new TwoFragment();
+        final ThreeFragment threeFragment = new ThreeFragment();
         transaction.replace(R.id.content, twoFragment);
         transaction.commit();
 
@@ -56,20 +54,19 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 switch (id){
                     case R.id.navigation_one:
-                        fragment = new OneFragment();
+                        fragment = oneFragment;
                         break;
                     case R.id.navigation_two:
-                        fragment = new TwoFragment();
+                        fragment = twoFragment;
                         break;
                     case R.id.navigation_three:
-                        fragment = new ThreeFragment();
+                        fragment = threeFragment;
                         break;
                     default:
-                        fragment = new TwoFragment();
+                        fragment = twoFragment;
                         break;
                 }
-                //final FragmentTransaction transaction = fragmentManager.beginTransaction();
-                //transaction.replace(R.id.content, fragment).commit();
+
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.content, fragment);
                 transaction.commit();

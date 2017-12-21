@@ -14,7 +14,9 @@ import android.widget.EditText;
  */
 
 public class OneFragment extends android.support.v4.app.Fragment {
-    public OneFragment(){}
+    OneFragment OneFragment(){
+        return this;
+    }
 
     private AutoCompleteTextView mInputTokenView;
     private Button btnTopUp;

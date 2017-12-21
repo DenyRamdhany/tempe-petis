@@ -14,11 +14,22 @@
       if(empty($param)) $this->show('p_api',$data);
       else if($auth->isKeyValid($param[0]))
       { $data['enabled'] = 1;
-        if(empty($param[1])) $data['response'] = $this->Pelanggan->getWithKey($param[0]);
+
+        if($param[1]=="post")
+        { $this->kirim($this->postData());
+          $data['enabled'] = 0;
+        }
+        else if(empty($param[1])) $data['response'] = $this->Pelanggan->getWithKey($param[0]);
         else $data['response'] = ($this->Pelanggan->getWithKey($param[0])[$param[1]]);
+
         $this->show('p_api',$data);
       }
       else $this->show('p_api',$data);
+    }
+
+    public function kirim($param)
+    { $this->debug($param);
+
     }
 
     public function reqotp($param)

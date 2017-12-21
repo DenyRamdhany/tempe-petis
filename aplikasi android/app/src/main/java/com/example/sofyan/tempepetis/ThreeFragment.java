@@ -2,6 +2,10 @@ package com.example.sofyan.tempepetis;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -17,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,13 +31,12 @@ import java.util.Map;
 public class ThreeFragment extends android.support.v4.app.Fragment {
     UserPref up   = new UserPref();
     Pelanggan pel = new Pelanggan();
-    final Map<String, String> listItemMap = new HashMap<String, String>();
 
-    private ListView listv;
+    private RecyclerView daftar;
     private View v;
-    ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
-    private SimpleAdapter sa;
-    private HashMap<String,String> item;
+    private List<Aduan> aduan = new ArrayList<>();
+    private AduanAdapter mAdapter;
+    private int counter;
 
     private Handler handler = new Handler();
     private Runnable runnable;
@@ -42,33 +46,37 @@ public class ThreeFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup content, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_three, content,false);
+        daftar = (RecyclerView) v.findViewById(R.id.listAduan);
+        mAdapter = new AduanAdapter(aduan);
+
+        daftar.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+
+        daftar.setLayoutManager(mLayoutManager);
+        daftar.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
+        daftar.setItemAnimator(new DefaultItemAnimator());
+
+        daftar.setAdapter(mAdapter);
+        counter = aduan.size();
 
         runnable = new Runnable() {
             @Override
             public void run() {
                 try {
                     if(isAdded()) {
-                        list.clear();
-                        JSONArray adu = new JSONArray(up.getstring(getActivity(), "aduan")); //ini ambil data meteran, adanya "meteran" "userdata" "history" sama "aduan"
+                        aduan.clear();
+                        JSONArray arrayAduan = new JSONArray(up.getstring(getActivity(), "aduan")); //ini ambil data meteran, adanya "meteran" "userdata" "history" sama "aduan"
 
-                        for(int i=0;i<adu.length();i++){
-                            JSONObject aduan = adu.getJSONObject(i);
-
-                            item = new HashMap<String,String>();
-                            item.put( "line1", aduan.getString("teks_aduan"));
-                            item.put( "line2", aduan.getString("status_aduan"));
-                            list.add( item );
-                        }
-                        sa = new SimpleAdapter(getActivity(), list,
-                                android.R.layout.simple_list_item_2,
-                                new String[] { "line1","line2" },
-                                new int[] {R.id.textView,R.id.textView});
-
-                        if(!list.isEmpty()) {
-                            listv = (ListView) v.findViewById(R.id.listdata);
-                            listv.setAdapter(sa);
+                        for(int i=0;i<arrayAduan.length();i++){
+                            JSONObject objAdu = arrayAduan.getJSONObject(i);
+                            Aduan adu = new Aduan(objAdu.getString("teks_aduan"),objAdu.getString("status_aduan"));
+                            aduan.add(adu);
                         }
 
+                        if(counter<aduan.size()) {
+                            counter = aduan.size();
+                            mAdapter.notifyDataSetChanged();
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

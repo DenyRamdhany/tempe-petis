@@ -18,6 +18,13 @@
 
       return $return;
     }
+
+    // public function addAduan($key,$msg)
+    // { $pel = new Pelanggan();
+    //   $rek = $pel->getDetailKey($key)['no_rek_listrik'];
+    //
+    //   //$db->query("INSERT INTO aduan ()");
+    // }
   }
 
 

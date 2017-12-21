@@ -105,6 +105,10 @@
     { return $this->db->query('SELECT * FROM pelanggan LEFT JOIN meteran ON pelanggan.no_meter = meteran.no_meter WHERE no_rek_listrik="'.$id.'"');
     }
 
+    // public function getDetailKey($key)
+    // { return $this->db->query('SELECT * FROM pelanggan WHERE keylog="'.$key.'"');
+    // } 
+
     public function getWithMeteran()
     { return $this->db->getLeftJoin('pelanggan','meteran','no_meter');
     }
