@@ -33,12 +33,13 @@ public class TwoFragment extends android.support.v4.app.Fragment {
         @Override
         public void run() {
             try {
-                JSONObject met = new JSONObject(up.getstring(getContext(),"meteran")); //ini ambil data meteran, adanya "meteran" "userdata" "history" sama "aduan"
+                if(isAdded()) {
+                    JSONObject met = new JSONObject(up.getstring(getActivity(), "meteran")); //ini ambil data meteran, adanya "meteran" "userdata" "history" sama "aduan"
 
-                txtDaya.setText(met.getString("sisa_kwh").toString());  // ini ambil data "sisa_kwh" dari "meteran"
-                if (met.getInt("status")==1) btnMain.setChecked(true);
-                else btnMain.setChecked(false);
-
+                    txtDaya.setText(met.getString("sisa_kwh").toString());  // ini ambil data "sisa_kwh" dari "meteran"
+                    if (met.getInt("status")==1) btnMain.setChecked(true);
+                    else btnMain.setChecked(false);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -52,7 +53,7 @@ public class TwoFragment extends android.support.v4.app.Fragment {
         View v = inflater.inflate(R.layout.fragment_two, content,false);
         txtDaya = (TextView) v.findViewById(R.id.daya);
         btnMain = (ToggleButton) v.findViewById(R.id.toggleButton_power);
-        handler.postDelayed(runnable, 4000);
+        handler.post(runnable);
         return v;
     }
 }
