@@ -1,4 +1,5 @@
 <?php
+  // Kelas inisialisasi kelas yang mau jadi singleton
 
   final class Init
   {
@@ -6,25 +7,14 @@
     { static $inst = null;
       if($inst === null)
       { $inst = new Init();
-        $inst->database = new Database();
+
         $inst->email    = new Email();
         $inst->session  = new Session();
-
-        //tambah kelas baru disini
-        $inst->pegawai  = new Pegawai();
-        $inst->golongan = new Golongan();
-        $inst->token    = new Token();
-        $inst->aduan    = new Aduan();
-        $inst->meteran  = new Meteran();
-        $inst->pelanggan= new Pelanggan();
+        $inst->jsonify  = new Jsonify();
+        $inst->broker   = new Broker(array('pegawai','golongan','meteran','aduan','token','otp','pelanggan'));
       }
       return $inst;
     }
-
-    function __construct()
-    {
-    }
-
   }
 
 

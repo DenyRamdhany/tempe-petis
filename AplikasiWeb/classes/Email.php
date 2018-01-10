@@ -29,9 +29,8 @@
       $this->mail->Subject = $param['subject'];
       $this->mail->Body    = $param['body'];
 
-      if($this->mail->send()) return "Berhasil Dikirim";
+      if($this->mail->send()) return true;
       else return $this->mail->ErrorInfo;
-
     }
   }
 

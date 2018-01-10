@@ -2,8 +2,8 @@
 
   class Page
   {
-    protected $baseURL  = 'https://petis.jaban.in/';
-  //  protected $baseURL  = 'http://localhost/petis/';
+  //  protected $baseURL  = 'https://petis.jaban.in/';
+    protected $baseURL  = 'http://192.168.1.15/petis/';
     protected $appName  = 'Tempe Petis';
     protected $router   = 'index.php';
     protected $views    = 'views';
@@ -14,6 +14,10 @@
       foreach ($obj as $key) {
         $this->{get_class($key)}=$key;
       }
+    }
+
+    public function get($attrib="")
+    { return $this->$attrib;
     }
 
     public function getURL()
@@ -31,8 +35,12 @@
       }
     }
 
-    public function postData()
-    { return $_POST;
+    public function postData($key="")
+    { if(!empty($key))
+      { if($_POST[$key]!=null) return $_POST[$key];
+        else return null;
+      }
+      else return $_POST;
     }
 
     public function redirect($param)

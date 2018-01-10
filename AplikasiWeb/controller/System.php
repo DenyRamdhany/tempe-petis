@@ -8,75 +8,92 @@
     }
 
     public function index()
-    { $param['golongan']      = $this->Golongan->getAll();
-      $param['pelanggan']     = $this->Pelanggan->getWithMeteran();
-      $param['meteranKosong'] = $this->Meteran->getAvailable();
-      $param['meteran']       = $this->Meteran->getAll();
-      $param['userData']      = $this->Session->getData();
-      $param['history']       = $this->Token->getAll();
-
+    { $param['userData']      = $this->Session->getData();
+      $param['golongan']      = $this->Broker->get('golongan');
+      $param['meteran']       = $this->Broker->get('meteran');
+      $param['aduan']         = $this->Broker->get('aduan');
+      $param['history']       = $this->Broker->get('token');
+      $param['pelanggan']     = $this->Broker->get('pelanggan');
+      $json = new Jsonify();
+      $param['test']          = $json->getJSON($param['pelanggan'][0]);
+      $param['meteranKosong'] = $this->Broker->findAttrib('meteran','nomor_rekening','null');
       $this->show('p_system',$param);
     }
 
+    //fungsi untuk operasi pada form
+    public function add()
+    { $class = ucfirst($this->postData('table'));
+      $data  = $this->postData();
+      unset($data['table']);
 
-    //fungsi untuk tabel golongan
-    public function addGolongan()
-    { $this->Golongan->addReplace($this->postData());
+      $obj = new $class();
+      $obj->fill($data);
+
+      if($class=='Pelanggan' && array_key_exists('no_meter',$data))
+      { $pel = $this->Broker->findKey('Pelanggan',$data['nomor_rekening']);
+        if($pel->get('Meteran')!=null)
+        { $pel->get('Meteran')->set('nomor_rekening',null);
+          $this->Broker->save($pel->get('Meteran'));
+        }
+        $met = $this->Broker->findKey('Meteran',$data['no_meter']);
+        if($met!=null) $met->set('nomor_rekening',$data['nomor_rekening']);
+        $obj->set('Meteran',$met);
+      }
+
+      $this->Broker->save($obj);
       $this->redirect('');
     }
-    public function detailGolongan()
-    { echo json_encode($this->Golongan->getDetail($this->postData()['id_golongan']));
+    public function detail()
+    { $class  = $this->postData('table');
+      $key    = $this->postData('key');
+      $object = $this->Broker->findKey($class,$key);
+      $return = new Jsonify();
+      echo json_encode($return->getJSON($object,array('Otp','Aduan','Token')));
     }
-    public function delGolongan()
-    { echo $this->Golongan->delGolongan($this->postData());
+
+    public function delete()
+    { $class = $this->postData('table');
+      $key   = $this->postData('key');
+
+      if($class=='pelanggan')
+      { $pel = $this->Broker->findKey('Pelanggan',$key);
+        if($pel->get('Meteran')!=null)
+        { $pel->get('Meteran')->set('nomor_rekening',null);
+          $this->Broker->save($pel->get('Meteran'));
+        }
+      }
+
+      $object = $this->Broker->findKey($class,$key);
+      if(!empty($object))
+        if($this->Broker->delete($object)) echo "1";
+        else echo "0";
+    }
+
+    //fungsi buat resolve aduan, beda sendiri soalnya
+    public function resolve()
+    { $adu = $this->Broker->findKey('Aduan',$this->postData('key'));
+      if($adu!=null)
+      { $adu->tanggapi();
+        $this->Broker->save($adu);
+        echo "1";
+      }
+      else echo "0";
     }
 
 
     //fungsi untuk tabel pelanggan
-    public function addPelanggan()
-    { $this->Pelanggan->addReplace($this->postData());
-      $this->redirect('');
-    }
     public function randomRekening()
     { $random;
-      $ada    = $this->Pelanggan->getAll();
+      $ada    = $this->Broker->get('Pelanggan');
       $state  = 1;
       while($state)
-      { $random = mt_rand(1000000000,9999999999);
+      { $random = mt_rand(100000000,999999999);
         $state = 0;
         foreach ($ada as $value) {
-          if($value['no_rek_listrik']==$random) $state = 1;
+          if($value->get('nomor_rekening')==$random) $state = 1;
         }
       }
       echo $random;
-    }
-    public function detailPelanggan()
-    { echo json_encode($this->Pelanggan->getDetail($this->postData()['no_rek_listrik']));
-    }
-    public function delPelanggan()
-    { echo $this->Pelanggan->delPelanggan($this->postData());
-    }
-
-
-    // fungsi untuk tabel meteran
-    public function addMeteran()
-    { $this->Meteran->addReplace($this->postData());
-      $this->redirect('');
-    }
-    public function detailMeteran()
-    { echo json_encode($this->Meteran->getDetail($this->postData()['no_meter']));
-    }
-    public function delMeteran()
-    { echo $this->Meteran->delete($this->postData());
-    }
-
-    public function mail($param)
-    { $this->email()->send(array( 'mailTo'     => $param[0] ,
-                                  'senderName' => 'Tempe Petis',
-                                  'mailName'   => 'Testing Mail',
-                                  'subject'    => 'Testing Email Petis' ,
-                                  'body'       => 'test kirim com...'
-                                ));
     }
 
   }

@@ -4,13 +4,14 @@
   spl_autoload_register(function ($class_name) {
     if(file_exists('./classes/'.$class_name.'.php')) require_once './classes/'.$class_name.'.php';
     else if(file_exists('./controller/'.$class_name.'.php')) require_once './controller/'.$class_name.'.php';
+    else if(file_exists('./classes/custom/'.$class_name.'.php')) require_once './classes/custom/'.$class_name.'.php';
     else
     { echo "Error pada Classes atau Controller tidak tersedia";
     }
   });
 
   Init::Instance();
- 
+
   $url   = $_SERVER['REQUEST_URI'];
   $path  = explode('/', parse_url(substr($url, strpos($url, basename(__FILE__)) + 10), PHP_URL_PATH));
   $page  = ucfirst(array_shift($path));

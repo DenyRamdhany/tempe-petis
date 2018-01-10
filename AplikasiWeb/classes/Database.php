@@ -63,6 +63,34 @@
       }
     }
 
+    public function insertUpdate($table,$values)
+    { if($this->open())
+      { $key   = array_keys($values);
+        $val   = array_values($values);
+        $field = implode(',',$key);
+        $bind  = str_repeat("?,",count($key)-1);
+
+        $updte = array();
+        foreach ($key as $k => $v) {
+          if($val[$k]==null) $updte[]=$v.' = NULL';
+          else $updte[]=$v.' = "'.$val[$k].'"';
+        }
+        $updte=implode(',',$updte);
+
+        try {
+          $sql = 'INSERT INTO '.$table." ($field) VALUES ($bind?)";
+          $sql.=" ON DUPLICATE KEY UPDATE ".$updte;
+          $this->conn->prepare($sql)->execute($val);
+          return true;
+        }
+        catch(PDOException $e){
+          return $e->getMessage();
+        }
+
+        $this->close();
+      }
+    }
+
     public function getTable($table,$col = '*')
     { if($this->open())
       { $sql = 'SELECT '.$col.' FROM '.$table;
@@ -120,9 +148,28 @@
           return true;
         }
         catch(PDOException $e){
-          return $e->getMessage();
+          return false;
         }
 
+        $this->close();
+      }
+    }
+
+    public function attrib($table)
+    { if($this->open())
+      { $return = array();
+        try {
+          $res = $this->conn->query('DESCRIBE '.$table)->fetchAll(PDO::FETCH_ASSOC);
+          foreach ($res as $value) {
+            if($value['Key']=="PRI")
+               array_unshift($return,$value['Field']);
+            else $return[]=$value['Field'];
+          }
+          return $return;
+        }
+        catch(PDOException $e){
+          return $e;
+        }
         $this->close();
       }
     }

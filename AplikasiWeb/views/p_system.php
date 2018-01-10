@@ -1,7 +1,7 @@
 <?php
   require_once("include.php");
   require_once("navbar.php");
-  //$this->debug($pelanggan);
+  $this->debug();
 ?>
 
 <br>
@@ -34,25 +34,25 @@
             <tbody>
               <?php
                 foreach ($pelanggan as $pel) {
-                  if(!empty($pel['no_meter'])) echo "<tr>";
+                  if($pel->get('Meteran')!=null) echo "<tr>";
                   else echo "<tr class=text-danger>";
-                    echo "<td>$pel[no_rek_listrik]</td>";
+                    echo "<td>".$pel->get('nomor_rekening')."</td>";
 
-                    if(!empty($pel['no_meter'])) echo "<td>$pel[no_meter]</td>";
+                    if($pel->get('Meteran')!=null) echo "<td>".$pel->get('Meteran')->get('no_meter')."</td>";
                     else echo "<td></td>";
 
-                    if(!empty($pel['no_meter'])) echo "<td>$pel[id_golongan]</td>";
+                    if($pel->get('Meteran')!=null) echo "<td>".$pel->get('Meteran')->get('id_golongan')."</td>";
                     else echo "<td></td>";
 
-                    echo "<td>$pel[nama]</td>";
-                    echo "<td>$pel[alamat]</td>";
+                    echo "<td>".$pel->get('nama')."</td>";
+                    echo "<td>".$pel->get('alamat')."</td>";
                     echo '<td><center>
-                      <a href="#" onClick="editPelanggan(\''.$pel['no_rek_listrik'].'\')" id="edit"><i class="fa fa-fw fa-pencil fa-lg text-success" data-toggle="tooltip" title="Lihat/Ubah"></i></a>';
-                      if(!empty($pel['no_meter']))
-                      { if($pel['status'])
-                        echo '<a href="#" onClick="editMeteran(\''.$pel['no_meter'].'\')" id="edit"><i class="fa fa-fw fa-power-off fa-lg text-success" data-toggle="tooltip" title="Lihat/Ubah Meteran"></i></a>';
+                      <a href="#" onClick="editPelanggan(\''.$pel->get('nomor_rekening').'\')" ><i class="fa fa-fw fa-pencil fa-lg text-success" data-toggle="tooltip" title="Lihat/Ubah"></i></a>';
+                      if($pel->get('Meteran')!=null)
+                      { if($pel->get('Meteran')->get('status'))
+                        echo '<a href="#" onClick="editMeteran(\''.$pel->get('Meteran')->get('no_meter').'\')" ><i class="fa fa-fw fa-power-off fa-lg text-success" data-toggle="tooltip" title="Lihat/Ubah Meteran"></i></a>';
                         else
-                        echo '<a href="#" onClick="editMeteran(\''.$pel['no_meter'].'\')" id="edit"><i class="fa fa-fw fa-power-off fa-lg text-danger" data-toggle="tooltip" title="Lihat/Ubah Meteran"></i></a>';
+                        echo '<a href="#" onClick="editMeteran(\''.$pel->get('Meteran')->get('no_meter').'\')" ><i class="fa fa-fw fa-power-off fa-lg text-danger" data-toggle="tooltip" title="Lihat/Ubah Meteran"></i></a>';
 
                       }
 
@@ -94,19 +94,28 @@
               <?php
               $c=1;
                 foreach ($history as $tok) {
-                  if(!$tok['status']) echo "<tr class=text-danger>";
+                  if(!$tok->get('status')) echo "<tr class=text-danger>";
                   else echo "<tr class=text-success>";
                     echo "<td>".$c++."</td>";
-                    echo "<td>$tok[no_rek_listrik]</td>";
-                    echo "<td>".date("l, d-m-Y H:i",$tok[tgl_bayar])."</td>";
-                    echo "<td>$tok[no_token]</td>";
-                    $noms = str_split(strrev($tok['nominal']),3);
+                    echo "<td>".$tok->get('nomor_rekening')."</td>";
+                    echo "<td>".date("l, d-M-Y H:i",strtotime($tok->get('tgl_beli')))."</td>";
+
+                    $token  = str_split(strrev($tok->get('no_token')),4);
+                    $tokens = "";
+                    foreach ($token as $one) {
+                      if($one==$token[count($token)-1]) $tokens.=$one;
+                      else $tokens.=$one.'-';
+                    }
+                    $tokens=strrev($tokens);
+                    echo "<td>$tokens</td>";
+
+                    $noms = str_split(strrev($tok->get('nominal')),3);
                     $nominal = "";
                     foreach ($noms as $nom) {
-                      $nominal.=$nom.'.';
+                      $nominal.=$nom.' ';
                     }
                     $nominal=strrev($nominal);
-                    echo "<td>Rp$nominal</td>";
+                    echo "<td>Rp.$nominal</td>";
                   echo "</tr>";
                 }
               ?>
@@ -147,11 +156,11 @@
               <?php
                 foreach ($golongan as $gol) {
                   echo "<tr>";
-                    echo "<td>$gol[id_golongan]</td>";
-                    echo "<td>$gol[nama_golongan]</td>";
-                    echo "<td>Rp. $gol[harga_perkwh]</td>";
+                    echo "<td>".$gol->get('id_golongan')."</td>";
+                    echo "<td>".$gol->get('nama_gol')."</td>";
+                    echo "<td>Rp. ".$gol->get('tarif_dasar')."</td>";
                     echo '<td><center>
-                      <a href="#" onClick="editGolongan(\''.$gol['id_golongan'].'\')"><i class="fa fa-fw fa-pencil fa-lg text-success" data-toggle="tooltip" title="Lihat/Ubah"></i></a><a href="#" onClick="delGolongan(\''.$gol['id_golongan'].'\')"><i class="fa fa-fw fa-trash-o fa-lg text-danger" data-toggle="tooltip" title="Hapus"></i></a></center></td>';
+                      <a href="#" onClick="editGolongan(\''.$gol->get('id_golongan').'\')"><i class="fa fa-fw fa-pencil fa-lg text-success" data-toggle="tooltip" title="Lihat/Ubah"></i></a><a href="#" onClick="delGolongan(\''.$gol->get('id_golongan').'\')"><i class="fa fa-fw fa-trash-o fa-lg text-danger" data-toggle="tooltip" title="Hapus"></i></a></center></td>';
                   echo "</tr>";
                 }
               ?>
@@ -187,12 +196,12 @@
             <tbody>
               <?php
                 foreach ($meteran as $val) {
-                  if($val['status']) echo "<tr>";
+                  if($val->get('status')) echo "<tr>";
                   else echo "<tr class=text-danger>";
-                    echo "<td>$val[no_meter]</td>";
-                    echo "<td>$val[nama_golongan]</td>";
+                    echo "<td>".$val->get('no_meter')."</td>";
+                    echo "<td>".$val->get('Golongan')->get('nama_gol')."</td>";
                     echo '<td><center>
-                      <a href="#" onClick="editMeteran(\''.$val['no_meter'].'\')" id="edit"><i class="fa fa-fw fa-pencil fa-lg text-success" data-toggle="tooltip" title="Lihat/Ubah"></i></a><a href="#" onClick="delMeteran(\''.$val['no_meter'].'\')"><i class="fa fa-fw fa-trash-o fa-lg text-danger" data-toggle="tooltip" title="Hapus"></i></a></center></td>';
+                      <a href="#" onClick="editMeteran(\''.$val->get('no_meter').'\')" ><i class="fa fa-fw fa-pencil fa-lg text-success" data-toggle="tooltip" title="Lihat/Ubah"></i></a><a href="#" onClick="delMeteran(\''.$val->get('no_meter').'\')"><i class="fa fa-fw fa-trash-o fa-lg text-danger" data-toggle="tooltip" title="Hapus"></i></a></center></td>';
                   echo "</tr>";
                 }
               ?>
@@ -202,6 +211,51 @@
         <div class="panel-footer">
           <div class="text-left">
             <span class="text-danger">Merah</span> : Meteran Non-aktif
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-8 text-left">
+              <a onclick="resize('panelAduan');" class="btn btn-danger btn-xs"><i class="fa fa-compress"></i></a> &nbsp;
+              <i class="fa fa-exclamation-triangle"></i> &nbsp; Daftar Aduan
+            </div>
+          </div>
+        </div>
+        <div id="panelAduan" class="panel-body">
+          <table id="tblAduan" width="100%" class="table table-striped table-bordered table-hover">
+            <thead>
+              <th width="5%">No</th>
+              <th width="20%">Pengirim</th>
+              <th>Problem</th>
+              <th width="10%"></th>
+            </thead>
+            <tbody>
+              <?php
+              $coun = 1;
+                foreach ($aduan as $val) {
+                  echo "<tr>";
+                    echo "<td><center>".$coun++."</center></td>";
+                    echo "<td>".$val->get('nomor_rekening')."</td>";
+                    echo "<td>".$val->get('teks_aduan')."</td>";
+                    if($val->get('status'))
+                      echo '<td><center>
+                        <a href="#"><i class="fa fa-fw fa-check fa-lg text-success" data-toggle="tooltip" title="Selesai"></i></a></center></td>';
+                    else
+                      echo '<td><center>
+                        <a href="#" onClick="editAduan(\''.$val->get('no_aduan').'\')" ><i class="fa fa-fw fa-exclamation-triangle fa-lg text-danger" data-toggle="tooltip" title="Tanggapi"></i></a></center></td>';
+                  echo "</tr>";
+                }
+              ?>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel-footer">
+          <div class="text-left">
+            <i class="fa fa-fw fa-check fa-lg text-success"></i>&nbsp;: Sudah Ditanggapi<br>
+            <i class="fa fa-fw fa-exclamation-triangle text-danger"></i>&nbsp;&nbsp;: Belum Ditanggapi
           </div>
         </div>
       </div>
@@ -220,11 +274,12 @@
           <h2 id="modalPlgJudul"></h2>
           <br>
           <div class="row">
-            <form class="form-horizontal col-sm-12" action="<?php echo $this->getURL()."system/addPelanggan/"; ?>" method="post">
+            <form class="form-horizontal col-sm-12" action="<?php echo $this->getURL()."system/add/"; ?>" method="post">
               <div class="form-group">
                 <label class="control-label col-sm-2" >No Rekening</label>
                 <div class="col-sm-8">
-                  <input readonly id="modalPlgRek" type="text" name="no_rek_listrik" placeholder="Nomor Rekening" class="form-control" required>
+                  <input type="hidden" name="table" class="form-control" value="pelanggan">
+                  <input readonly id="modalPlgRek" type="text" name="nomor_rekening" placeholder="Nomor Rekening" class="form-control" required>
                 </div>
                 <div class="col-sm-2 text-right">
                   <input id="modalPlgGenBtn" onClick="generateMeter()" type="button" value="Generate" class="btn btn-primary" required>
@@ -237,7 +292,7 @@
                     <option value='null' selected>Belum Terdaftar</option>
                     <?php
                       foreach ($meteranKosong as $meter) {
-                        echo '<option value="'.$meter['no_meter'].'">'.$meter['no_meter'].' - '.$meter['id_golongan'].'</option>';
+                        echo '<option value="'.$meter->get('no_meter').'">'.$meter->get('no_meter').' - '.$meter->get('id_golongan').'</option>';
                       }
 
                     ?>
@@ -291,23 +346,24 @@
           <h2 id="modalGolJudul"></h2>
           <br>
           <div class="row">
-            <form class="form-horizontal col-sm-12" action="<?php echo $this->getURL()."system/addGolongan/"; ?>" method="post">
+            <form class="form-horizontal col-sm-12" action="<?php echo $this->getURL()."system/add/"; ?>" method="post">
               <div class="form-group">
                 <label class="control-label col-sm-3" >Kode Golongan</label>
                 <div class="col-sm-9">
+                  <input type="hidden" name="table" class="form-control" value="golongan">
                   <input id="modalGolId" type="text" name="id_golongan" class="form-control" required>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" >Nama Golongan</label>
                 <div class="col-sm-9">
-                  <input id="modalGolNama" type="text" name="nama_golongan" class="form-control" required>
+                  <input id="modalGolNama" type="text" name="nama_gol" class="form-control" required>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" >Harga Per-KWH</label>
                 <div class="col-sm-9">
-                  <input id="modalGolHarga" type="number" step=".01" name="harga_perkwh" class="form-control" required>
+                  <input id="modalGolHarga" type="number" step=".01" name="tarif_dasar" class="form-control" required>
                 </div>
               </div>
               <div class="text-right">
@@ -332,10 +388,12 @@
           <h2 id="modalMtrJudul"></h2>
           <br>
           <div class="row">
-            <form class="form-horizontal col-sm-12" action="<?php echo $this->getURL()."system/addMeteran/"; ?>" method="post">
+            <form class="form-horizontal col-sm-12" action="<?php echo $this->getURL()."system/add/"; ?>" method="post">
               <div class="form-group">
                 <label class="control-label col-sm-3" >No Meter</label>
                 <div class="col-sm-9">
+                    <input type="hidden" name="table" class="form-control" value="meteran">
+                    <input id='modalMtrRek' type="hidden" name="nomor_rekening" class="form-control" value="NULL">
                   <input id="modalMtrId" type="text" name="no_meter" placeholder="Nomor ID Meteran" class="form-control" required>
                 </div>
               </div>
@@ -345,7 +403,7 @@
                   <select  id="modalMtrGol" class="form-control" name="id_golongan">
                     <?php
                       foreach ($golongan as $gol) {
-                        echo '<option value="'.$gol['id_golongan'].'">'.$gol['id_golongan'].' - '.$gol['nama_golongan'].'</option>';
+                        echo '<option value="'.$gol->get('id_golongan').'">'.$gol->get('id_golongan').' - '.$gol->get('nama_gol').'</option>';
                       }
                     ?>
                   </select>
@@ -388,6 +446,7 @@
   var tblGolongan  = "";
   var tblMeteran   = "";
   var tblHistory   = "";
+  var tblAduan   = "";
 
   $(document).ready(function() {
     $('.panel-body').slideUp();
@@ -396,6 +455,7 @@
     if(localStorage['panelGolongan']==1) $("#panelGolongan").slideDown();
     if(localStorage['panelMeteran']==1) $("#panelMeteran").slideDown();
     if(localStorage['panelHistory']==1) $("#panelHistory").slideDown();
+    if(localStorage['panelAduan']==1) $("#panelAduan").slideDown();
 
     tblPelanggan=$('#tblPelanggan').DataTable({
         "responsive": {details: false},
@@ -413,6 +473,11 @@
     });
 
     tblHistory=$('#tblHistory').DataTable({
+        "responsive": {details: false},
+        "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
+    });
+
+    tblAduan=$('#tblAduan').DataTable({
         "responsive": {details: false},
         "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
     });
@@ -451,18 +516,18 @@
     });
   }
   function editPelanggan(id) {
-    $.post(url+"system/detailPelanggan",{no_rek_listrik:id}, function(data) {
-      var val = JSON.parse(data)[0];
+    $.post(url+"system/detail",{table:'pelanggan',key:id}, function(data) {
+      var val = JSON.parse(data);
       $('#modalPlgJudul').html("Edit Pelanggan");
       $("#modalPlgDeleteBtn").show();
-      $("#modalPlgDeleteBtn").attr('onClick','delPelanggan(\''+val.no_rek_listrik+'\')');
+      $("#modalPlgDeleteBtn").attr('onClick','delPelanggan(\''+val.nomor_rekening+'\')');
 
       $("#modalPlgGenBtn").hide();
-      $("#modalPlgRek").val(val.no_rek_listrik);
+      $("#modalPlgRek").val(val.nomor_rekening);
 
       $("#appended").remove();
-      if(val.no_meter==null) $("#modalPlgMeter").val('null');
-      else $("#modalPlgMeter").append('<option id="appended" value="'+val.no_meter+'"selected>'+val.no_meter+' - '+val.id_golongan+'</option>');
+      if(val.Meteran==null) $("#modalPlgMeter").val('null');
+      else $("#modalPlgMeter").append('<option id="appended" value="'+val.Meteran.no_meter+'"selected>'+val.Meteran.no_meter+' - '+val.Meteran.id_golongan+'</option>');
 
       $("#modalPlgNama").val(val.nama);
       $("#modalPlgTlp").val(val.no_tlp);
@@ -474,7 +539,7 @@
   }
   function delPelanggan(id) {
     if (confirm("Hapus pelanggan "+id+"?")) {
-      $.post(url+"system/delPelanggan",{no_rek_listrik:id}, function(data) {
+      $.post(url+"system/delete",{table:'pelanggan',key:id}, function(data) {
 
         if(data=="1") alert('Berhasil Dihapus');
         else alert("Gagal Hapus");
@@ -495,20 +560,19 @@
     $('#modalGolongan').modal('show');
   }
   function editGolongan(id) {
-    $.post(url+"system/detailGolongan",{id_golongan:id}, function(data) {
-      var val = JSON.parse(data)[0];
+    $.post(url+"system/detail",{table:'golongan',key:id}, function(data) {
+      var val = JSON.parse(data);
       $('#modalGolJudul').html("Edit Golongan");
       $("#modalGolId").val(val.id_golongan);
-      $("#modalGolNama").val(val.nama_golongan);
-      $("#modalGolHarga").val(val.harga_perkwh);
+      $("#modalGolNama").val(val.nama_gol);
+      $("#modalGolHarga").val(val.tarif_dasar);
     });
 
     $('#modalGolongan').modal('show');
   }
   function delGolongan(id) {
     if (confirm("Hapus golongan "+id+"?")) {
-      $.post(url+"system/delGolongan",{id_golongan:id}, function(data) {
-
+      $.post(url+"system/delete",{table:'golongan',key:id}, function(data) {
         if(data=="1") alert('Berhasil Dihapus');
         else alert("Gagal Hapus");
 
@@ -528,12 +592,11 @@
     $('#modalMeteran').modal('show');
   }
   function editMeteran(id) {
-    console.log(id);
-    $.post(url+"system/detailMeteran",{no_meter:id}, function(data) {
-      console.log(data);
-      var val = JSON.parse(data)[0];
+    $.post(url+"system/detail",{table:'meteran',key:id}, function(data) {
+      var val = JSON.parse(data);
       $('#modalMtrJudul').html("Edit Meteran");
       $('#modalMtrId').val(val.no_meter);
+      $('#modalMtrRek').val(val.nomor_rekening);
       $('#modalMtrGol').val(val.id_golongan);
       $('#modalMtrKwh').val(val.sisa_kwh);
       $('input:radio[name=status]').filter('[value='+val.status+']').prop('checked',true);
@@ -543,10 +606,20 @@
   }
   function delMeteran(id) {
     if (confirm("Hapus meteran "+id+"?")) {
-      $.post(url+"system/delMeteran",{no_meter:id}, function(data) {
-
+      $.post(url+"system/delete",{table:'meteran',key:id}, function(data) {
         if(data=="1") alert('Berhasil Dihapus');
         else alert("Gagal Hapus");
+
+        location.reload();
+      });
+    }
+  }
+
+  function editAduan(id) {
+    if (confirm("Aduan telah diselesaikan?")) {
+      $.post(url+"system/resolve",{key:id}, function(data) {
+        if(data=="1") alert('Selesai');
+        else alert("Gagal");
 
         location.reload();
       });
