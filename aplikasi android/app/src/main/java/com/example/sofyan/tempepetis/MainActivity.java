@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //up.clearData(getApplicationContext());
+        up.clearData(getApplicationContext());
         handler.removeCallbacks(runnable);
         finish();
     }

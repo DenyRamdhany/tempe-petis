@@ -1,5 +1,5 @@
 <resources>
-    <string name="base_url">https://petis.jaban.in/index.php/api</string>
+    <string name="base_url">http://192.168.1.15/petis/index.php/api</string>
     <string name="data_url">empty</string>
 
     <string name="app_name">Tempe Petis</string>

@@ -30,7 +30,7 @@ public class OTP{
 
     public void reqOtp(final Context c, String rekening, String url){
         RequestQueue queue = Volley.newRequestQueue(c);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url+"/reqotp/"+rekening,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url+"/request/"+rekening,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -70,10 +70,10 @@ public class OTP{
                                                 try {
                                                     JSONObject jobj = new JSONObject(responses);
                                                     jobj = new JSONObject(responses);
-                                                    up.saveData(c,"userdata",jobj.getString("userdata"));
-                                                    up.saveData(c,"meteran",jobj.getString("meteran"));
-                                                    up.saveData(c,"history",jobj.getString("history"));
-                                                    up.saveData(c,"aduan",jobj.getString("aduan"));
+                                                    //up.saveData(c,"userdata",jobj.getString("userdata"));
+                                                    up.saveData(c,"meteran",jobj.getString("Meteran"));
+                                                    up.saveData(c,"history",jobj.getString("Token"));
+                                                    up.saveData(c,"aduan",jobj.getString("Aduan"));
                                                 } catch (JSONException e) {
                                                 }
                                             }

@@ -29,10 +29,11 @@ public class Pelanggan {
                         try {
                             JSONObject jobj = new JSONObject(response);
                             jobj = new JSONObject(response);
-                            up.saveData(c,"userdata",jobj.getString("userdata"));
-                            up.saveData(c,"meteran",jobj.getString("meteran"));
-                            up.saveData(c,"history",jobj.getString("history"));
-                            up.saveData(c,"aduan",jobj.getString("aduan"));
+                            //up.saveData(c,"userdata",jobj.getString("userdata"));
+                            up.saveData(c,"meteran",jobj.getString("Meteran"));
+                            up.saveData(c,"history",jobj.getString("Token"));
+                            up.saveData(c,"aduan",jobj.getString("Aduan"));
+                            //Toast.makeText(c,jobj.getString("Aduan"),Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {
                             Toast.makeText(c, "JSON Error", Toast.LENGTH_LONG).show();
                         }
