@@ -13,6 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -55,6 +62,33 @@ public class TwoFragment extends android.support.v4.app.Fragment {
         View v = inflater.inflate(R.layout.fragment_two, content,false);
         txtDaya = (TextView) v.findViewById(R.id.daya);
         btnMain = (ToggleButton) v.findViewById(R.id.toggleButton_power);
+
+        btnMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handler.removeCallbacks(runnable);
+                String addr  = up.getstring(getActivity(),"address")+"/post/meteran/";
+
+                if(btnMain.isChecked()) addr+="on";
+                else addr+="off";
+
+                RequestQueue queue = Volley.newRequestQueue(getActivity());
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, addr,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Network Request Error", Toast.LENGTH_LONG).show();
+                    }
+                });
+                queue.add(stringRequest);
+                Pelanggan pel = new Pelanggan();
+            }
+        });
+
         handler.post(runnable);
 
         return v;
